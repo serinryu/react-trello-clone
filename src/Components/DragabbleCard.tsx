@@ -10,15 +10,16 @@ background-color: ${(props) => props.theme.cardColor};
 `;
 
 interface IDraggableCardProps{
-  toDo : string;
+  toDoId: number;
+  toDoText: string;
   index : number;
 }
 
-function DraggableCard({ toDo, index }: IDraggableCardProps){
+function DraggableCard({ toDoId, toDoText, index }: IDraggableCardProps){
   return(
-    <Draggable key={toDo} draggableId={toDo} index={index}>
+    <Draggable key={toDoId} draggableId={toDoId + ""} index={index}>
       {(provided) => (
-        <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>{toDo}</Card>)}
+        <Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>{toDoText}</Card>)}
     </Draggable>
   );
 }

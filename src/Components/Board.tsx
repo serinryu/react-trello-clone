@@ -1,6 +1,7 @@
 import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from './DragabbleCard';
 import styled from "styled-components";
+import { ITodo } from "../atoms";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -12,7 +13,6 @@ const Wrapper = styled.div`
 
 const Title = styled.h2`
   font-weight: 600;
-  margin-bottom: 10px;
   font-size: 18px;
 `
 const Area = styled.div<IAreaProps>`
@@ -28,7 +28,7 @@ const Area = styled.div<IAreaProps>`
 `;
 
 interface IWrapper {
-  toDos : string[],
+  toDos : ITodo[],
   boardId : string
 }
 
@@ -50,7 +50,12 @@ function Board({ toDos, boardId }:IWrapper){
           {...provided.droppableProps}
         >
           {toDos?.map((toDo, index) => (
-            <DraggableCard key={toDo} toDo={toDo} index={index}  />
+            <DraggableCard                 
+              key={toDo.id}
+              index={index}
+              toDoId={toDo.id}
+              toDoText={toDo.text}  
+            />
           ))}
           {provided.placeholder}
         </Area>
