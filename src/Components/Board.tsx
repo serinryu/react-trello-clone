@@ -1,7 +1,9 @@
+import { useForm } from "react-hook-form";
 import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from './DragabbleCard';
 import styled from "styled-components";
-import { ITodo } from "../atoms";
+import { useSetRecoilState } from "recoil";
+import { ITodo, toDoState } from "../atoms";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -27,6 +29,13 @@ const Area = styled.div<IAreaProps>`
   padding: 20px 0px;
 `;
 
+const Form = styled.form`
+  width: 100%;
+  input {
+    width: 100%;
+  }
+`;
+
 interface IWrapper {
   toDos : ITodo[],
   boardId : string
@@ -37,10 +46,36 @@ interface IAreaProps {
   isDraggingOver: boolean;
 }
 
+interface IForm {
+  addTask: string;
+}
+
 function Board({ toDos, boardId }:IWrapper){
+  const setTodo = useSetRecoilState(toDoState);
+  const { register, setValue, handleSubmit } = useForm<IForm>();
+  const onValid = ({ addTask }: IForm) => {
+    console.log(addTask);
+    setTodo((allBoards) => {
+      const addObj = {id: Date.now(), text: addTask};
+      return {
+        ...allBoards,
+        [boardId]: [...allBoards[boardId], addObj],
+      };
+    });
+    setValue("addTask", ""); // 추가 완료했으므로 비우기
+    };
+  
   return(
     <Wrapper>
     <Title> {boardId} </Title>
+    <Form onSubmit={handleSubmit(onValid)}>
+      <input
+        {...register("addTask", { required: true })}
+        type="text"
+        placeholder={`Add task on ${boardId}`}
+      />
+      <button>add</button>
+    </Form>
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
         <Area 
