@@ -31,8 +31,18 @@ const Area = styled.div<IAreaProps>`
 
 const Form = styled.form`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
   input {
-    width: 100%;
+    font-size: 16px;
+    border: 0;
+    background-color: white;
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
   }
 `;
 
@@ -63,7 +73,7 @@ function Board({ toDos, boardId }:IWrapper){
       };
     });
     setValue("addTask", ""); // 추가 완료했으므로 비우기
-    };
+  };
   
   return(
     <Wrapper>
@@ -89,7 +99,8 @@ function Board({ toDos, boardId }:IWrapper){
               key={toDo.id}
               index={index}
               toDoId={toDo.id}
-              toDoText={toDo.text}  
+              toDoText={toDo.text} 
+              boardId={boardId}
             />
           ))}
           {provided.placeholder}
