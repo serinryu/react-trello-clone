@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { toDoState } from './atoms';
 import Board from './Components/Board';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,6 +23,14 @@ const Boards = styled.div`
   width: 100%;
   gap: 15px;
 `;
+
+const Button = styled.div`
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  font-size: 50px;
+  opacity: 0.8;
+`
 
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
@@ -65,8 +76,14 @@ function App() {
       }));
     }
   };
+  const onButtonClick = (e :any) => {
+    setTodos((allBoards) => {
+      return { ...allBoards, [Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 5)]: [] }
+    })
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
       <Wrapper>
         <Boards>
           {Object.keys(toDos).map((boardId) => (
