@@ -1,7 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { ITodo, toDoState } from "../atoms";
 
 const Card = styled.div`
@@ -25,22 +25,26 @@ interface IDraggableCardProps{
 }
 
 function DraggableCard({ toDoId, toDoText, index, boardId }: IDraggableCardProps){
-  const setTodo = useSetRecoilState(toDoState);
+  const [todo, setTodo] = useRecoilState(toDoState);
   const onDelete = (event : React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget : {name},
     } = event;
     console.log(event);
+    const boardCopy = [...todo[boardId]];
+    const targetIndex = todo[boardId].findIndex((data) => data.id.toString() === name);
+    boardCopy.splice(targetIndex, 1);
     setTodo((allData) => {
-      const boardCopy = [...allData[boardId]];
-      const targetIndex = allData[boardId].findIndex((data) => data.id.toString() === name);
-      boardCopy.splice(targetIndex, 1);
       return {
         ...allData, 
         [boardId] : boardCopy,
       }
-    })
-  }
+    });
+    localStorage.setItem('storage', JSON.stringify({
+      ...todo, 
+      [boardId] : boardCopy,
+    }));
+  };
   return(
     <Draggable key={toDoId} draggableId={toDoId + ""} index={index}>
       {(provided) => (
