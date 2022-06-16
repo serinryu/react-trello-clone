@@ -29,9 +29,9 @@ function App() {
     if(!destination) return;
     //same board
     if(destination.droppableId === source.droppableId){
+      const boardCopy = [...toDos[source.droppableId]];
+      const taskObj = boardCopy[source.index];
       setTodos((allBoards) => {
-          const boardCopy = [...allBoards[source.droppableId]];
-          const taskObj = boardCopy[source.index];
           boardCopy.splice(source.index, 1);
           boardCopy.splice(destination?.index, 0, taskObj);
           return {
@@ -39,21 +39,30 @@ function App() {
             [source.droppableId]: boardCopy,
           };
       });
-    }
+      localStorage.setItem('storage', JSON.stringify({
+        ...toDos,
+        [source.droppableId]: boardCopy,
+      }));
+    };
     //different board
     if(destination.droppableId !== source.droppableId){
+      const sourceboardCopy = [...toDos[source.droppableId]];
+      const destinationboardCopy = [...toDos[destination.droppableId]];
+      const taskObj = sourceboardCopy[source.index];
+      sourceboardCopy.splice(source.index, 1);
+      destinationboardCopy.splice(destination?.index, 0, taskObj);
       setTodos((allBoards) => {
-        const sourceboardCopy = [...allBoards[source.droppableId]];
-        const destinationboardCopy = [...allBoards[destination.droppableId]];
-        const taskObj = sourceboardCopy[source.index];
-        sourceboardCopy.splice(source.index, 1);
-        destinationboardCopy.splice(destination?.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId]: sourceboardCopy,
           [destination.droppableId] : destinationboardCopy,
         };
-    });
+      });
+      localStorage.setItem('storage', JSON.stringify({
+        ...toDos,
+        [source.droppableId]: sourceboardCopy,
+        [destination.droppableId] : destinationboardCopy,
+      }));
     }
   };
   return (
