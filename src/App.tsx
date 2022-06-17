@@ -1,4 +1,4 @@
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { toDoState } from './atoms';
@@ -36,8 +36,10 @@ function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
     //console.log(info);
-    const { destination, draggableId, source } = info;
+    const { destination, draggableId, source, type } = info;
     if(!destination) return;
+
+    if(type === "droppableSubItem"){ 
     //same board
     if(destination.droppableId === source.droppableId){
       const boardCopy = [...toDos[source.droppableId]];
@@ -75,6 +77,16 @@ function App() {
         [destination.droppableId] : destinationboardCopy,
       }));
     }
+    }; // end if(type === "droppableSubItem")
+
+    if(type === "droppableItem"){
+
+      console.log(toDos);
+      // move board -> placement should be changed
+
+    }
+
+
   };
   const onButtonClick = (e :any) => {
     setTodos((allBoards) => {
@@ -83,14 +95,32 @@ function App() {
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
-      <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board key={boardId} boardId={boardId} toDos={toDos[boardId]}/>
-          ))}
-        </Boards>
-      </Wrapper>
+      <Droppable droppableId="droppable" type="droppableItem" direction="horizontal">
+        {(provided, snapshot) => (
+     
+          <Wrapper>
+            <Boards 
+              ref={provided.innerRef} 
+              {...provided.droppableProps}>
+            <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
+            {Object.keys(toDos).map((boardId, index) => (
+              <Draggable key={boardId} draggableId={boardId} index={index}>
+                {(provided, snapshot) => (
+                    <div ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}>
+                    <Board key={boardId} boardId={boardId} toDos={toDos[boardId]}/>
+                    </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+            </Boards>
+            </Wrapper>
+
+
+        )}
+      </Droppable>
     </DragDropContext>
 
 

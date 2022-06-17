@@ -4,6 +4,8 @@ import DraggableCard from './DragabbleCard';
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { ITodo, toDoState } from "../atoms";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -14,8 +16,16 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 5px;
   font-weight: 600;
   font-size: 18px;
+  div {
+    padding-left: 8px;
+    opacity: 50%;
+    font-size: 12px;
+  }
 `
 const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
@@ -75,10 +85,12 @@ function Board({ toDos, boardId }:IWrapper){
     setValue("addTask", ""); // 추가 완료했으므로 비우기
     localStorage.setItem('storage', JSON.stringify({ ...todo , [boardId]: [...todo[boardId], addObj] }));
   };
-  
   return(
     <Wrapper>
-    <Title> {boardId} </Title>
+    <Title> 
+      {boardId} 
+      <div><FontAwesomeIcon icon={faEdit}/></div>
+    </Title>
     <Form onSubmit={handleSubmit(onValid)}>
       <input
         {...register("addTask", { required: true })}
@@ -87,7 +99,7 @@ function Board({ toDos, boardId }:IWrapper){
       />
       <button>add</button>
     </Form>
-    <Droppable droppableId={boardId}>
+    <Droppable droppableId={boardId} type={`droppableSubItem`}>
       {(provided, snapshot) => (
         <Area 
           isDraggingOver={snapshot.isDraggingOver}
@@ -109,6 +121,7 @@ function Board({ toDos, boardId }:IWrapper){
       )}
     </Droppable>
     </Wrapper>
+    
   )
 }
 
