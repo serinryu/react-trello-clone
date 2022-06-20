@@ -83,7 +83,6 @@ function Board({ toDos, boardId }:IWrapper){
       };
     });
     setValue("addTask", ""); // 추가 완료했으므로 비우기
-    localStorage.setItem('storage', JSON.stringify({ ...todo , [boardId]: [...todo[boardId], addObj] }));
   };
   return(
     <Wrapper>

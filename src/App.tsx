@@ -53,10 +53,6 @@ function App() {
             [source.droppableId]: boardCopy,
           };
       });
-      localStorage.setItem('storage', JSON.stringify({
-        ...toDos,
-        [source.droppableId]: boardCopy,
-      }));
     };
     //different board
     if(destination.droppableId !== source.droppableId){
@@ -72,11 +68,6 @@ function App() {
           [destination.droppableId] : destinationboardCopy,
         };
       });
-      localStorage.setItem('storage', JSON.stringify({
-        ...toDos,
-        [source.droppableId]: sourceboardCopy,
-        [destination.droppableId] : destinationboardCopy,
-      }));
     }
     }; // end if(type === "droppableSubItem")
 

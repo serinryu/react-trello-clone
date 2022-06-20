@@ -40,10 +40,6 @@ function DraggableCard({ toDoId, toDoText, index, boardId }: IDraggableCardProps
         [boardId] : boardCopy,
       }
     });
-    localStorage.setItem('storage', JSON.stringify({
-      ...todo, 
-      [boardId] : boardCopy,
-    }));
   };
   return(
     <Draggable key={toDoId} draggableId={toDoId + ""} index={index}>
