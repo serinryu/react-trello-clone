@@ -1,11 +1,10 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { toDoState } from './atoms';
+import { toDoState, boardState } from './atoms';
 import Board from './Components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,6 +33,8 @@ const Button = styled.div`
 
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
+  const [boardList, setBoardList] = useRecoilState(boardState);
+  
   const onDragEnd = (info: DropResult) => {
     //console.log(info);
     const { destination, draggableId, source, type } = info;
@@ -80,19 +81,26 @@ function App() {
     }; // end if(type === "droppableSubItem")
 
     if(type === "droppableItem"){
-
-      console.log(toDos);
-      // move board -> placement should be changed
-
-    }
-
-
+      //move board -> placement should be changed
+      setBoardList((oldBoardList) => {
+        const tempList = [...oldBoardList];
+        tempList.splice(source.index, 1);
+        tempList.splice(destination.index, 0, draggableId);
+        return tempList;
+      });
+    };
   };
+
   const onButtonClick = (e :any) => {
+    const randomStr = Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 5);
     setTodos((allBoards) => {
-      return { ...allBoards, [Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 5)]: [] }
-    })
+      return { ...allBoards, [randomStr]: [] }
+    });
+    setBoardList((allBoardList) => {
+      return [ ...allBoardList , randomStr ]
+    });
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable" type="droppableItem" direction="horizontal">
@@ -103,7 +111,7 @@ function App() {
               ref={provided.innerRef} 
               {...provided.droppableProps}>
             <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
-            {Object.keys(toDos).map((boardId, index) => (
+            {boardList.map((boardId, index) => (
               <Draggable key={boardId} draggableId={boardId} index={index}>
                 {(provided, snapshot) => (
                     <div ref={provided.innerRef}
@@ -117,8 +125,6 @@ function App() {
             {provided.placeholder}
             </Boards>
             </Wrapper>
-
-
         )}
       </Droppable>
     </DragDropContext>
