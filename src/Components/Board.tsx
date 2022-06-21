@@ -84,6 +84,18 @@ function Board({ toDos, boardId }:IWrapper){
     });
     setValue("addTask", ""); // 추가 완료했으므로 비우기
   };
+  const onDeleteAll = (event : React.MouseEvent<HTMLButtonElement>) => {
+    const {
+      currentTarget : {name},
+    } = event;
+    setTodo((allBoards) => {
+        return {
+          ...allBoards,
+          [name] : [],
+        }
+    })
+  }
+
   return(
     <Wrapper>
     <Title> 
@@ -98,6 +110,7 @@ function Board({ toDos, boardId }:IWrapper){
       />
       <button>add</button>
     </Form>
+    <button onClick={onDeleteAll} name={boardId}>Delete All</button>
     <Droppable droppableId={boardId} type={`droppableSubItem`}>
       {(provided, snapshot) => (
         <Area 

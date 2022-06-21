@@ -29,6 +29,7 @@ const Button = styled.div`
   right: 50px;
   font-size: 50px;
   opacity: 0.8;
+  cursor: pointer;
 `
 
 function App() {
@@ -39,6 +40,16 @@ function App() {
     //console.log(info);
     const { destination, draggableId, source, type } = info;
     if(!destination) return;
+
+    console.log(destination);
+
+    if(type === "trashCan"){
+      setBoardList((allBoardList) => {
+        const boardCopy = allBoardList;
+        boardCopy.splice(source.index, 1);
+        return [...boardCopy]
+      })
+    }
 
     if(type === "droppableSubItem"){ 
     //same board
@@ -94,7 +105,7 @@ function App() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable" type="droppableItem" direction="horizontal">
+      <Droppable droppableId="board" type="droppableItem" direction="horizontal">
         {(provided, snapshot) => (
      
           <Wrapper>
@@ -115,7 +126,7 @@ function App() {
             ))}
             {provided.placeholder}
             </Boards>
-            </Wrapper>
+          </Wrapper>
         )}
       </Droppable>
     </DragDropContext>
