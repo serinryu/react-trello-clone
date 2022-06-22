@@ -6,6 +6,8 @@ import { useRecoilState } from "recoil";
 import { ITodo, toDoState } from "../atoms";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import React, {useState} from "react";
+import TitleForm from "./TitleForm";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -71,8 +73,10 @@ interface IForm {
 }
 
 function Board({ toDos, boardId }:IWrapper){
+  const [isEditClicked, setEditClick] = useState(false);
   const [ todo, setTodo ] = useRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
+
   const onValid = ({ addTask }: IForm) => {
     console.log(addTask);
     const addObj = {id: Date.now(), text: addTask};
@@ -84,6 +88,7 @@ function Board({ toDos, boardId }:IWrapper){
     });
     setValue("addTask", ""); // 추가 완료했으므로 비우기
   };
+
   const onDeleteAll = (event : React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget : {name},
@@ -94,13 +99,24 @@ function Board({ toDos, boardId }:IWrapper){
           [name] : [],
         }
     })
+  };
+  const onEditClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setEditClick((prev) => !prev);
   }
 
   return(
     <Wrapper>
     <Title> 
-      {boardId} 
-      <div><FontAwesomeIcon icon={faEdit}/></div>
+      {isEditClicked ? (
+        <TitleForm key={boardId} boardId={boardId} />
+      ) : (
+      <>
+        {boardId} 
+        <div onClick={onEditClick}>
+          <FontAwesomeIcon icon={faEdit}/>
+        </div>
+      </>
+      )}
     </Title>
     <Form onSubmit={handleSubmit(onValid)}>
       <input
