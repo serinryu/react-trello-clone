@@ -16,6 +16,13 @@ interface IFormAppearState {
   isAppear: boolean;
 }
 
+interface IMenuState {
+  isAppear: boolean;
+  positionX: number;
+  positionY: number;
+  boardId: string;
+}
+
 export const localStorageEffect = (id: string) =>
   ({ setSelf, onSet }: any) => {
     const savedValue = localStorage.getItem(id);
@@ -53,5 +60,16 @@ export const createState = atom<IFormAppearState>({
   default: {
     id: "",
     isAppear: false,
+  },
+});
+
+//메뉴 생성 상태
+export const menuState = atom<IMenuState>({
+  key: "menu",
+  default: {
+    isAppear: false,
+    positionX: 0,
+    positionY: 0,
+    boardId: "", // 어떤 보드가 열려 있는지 저장
   },
 });

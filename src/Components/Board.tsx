@@ -3,11 +3,12 @@ import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from './DragabbleCard';
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { ITodo, toDoState } from "../atoms";
+import { ITodo, toDoState, menuState } from "../atoms";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import React, {useState} from "react";
 import TitleForm from "./TitleForm";
+import Menu from "./Menu";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -17,10 +18,15 @@ const Wrapper = styled.div`
   min-height: 300px;
 `;
 
+const Head = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+`
+
 const Title = styled.h2`
   display: flex;
   justify-content: flex-start;
-  padding-bottom: 5px;
   font-weight: 600;
   font-size: 18px;
   div {
@@ -29,6 +35,7 @@ const Title = styled.h2`
     font-size: 12px;
   }
 `
+
 const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
     props.isDraggingOver 
@@ -75,6 +82,7 @@ interface IForm {
 function Board({ toDos, boardId }:IWrapper){
   const [ isEditClicked, setEditClick ] = useState(false);
   const [ todo, setTodo ] = useRecoilState(toDoState);
+  const [ isMenuAppear, setMenuState ] = useRecoilState(menuState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
 
   const onValid = ({ addTask }: IForm) => {
@@ -89,45 +97,52 @@ function Board({ toDos, boardId }:IWrapper){
     setValue("addTask", ""); // 추가 완료했으므로 비우기
   };
 
-  const onDeleteAll = (event : React.MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget : {name},
-    } = event;
-    setTodo((allBoards) => {
-        return {
-          ...allBoards,
-          [name] : [],
-        }
-    })
-  };
   
   const onEdit = (event: React.MouseEvent<HTMLDivElement>) => {
     setEditClick((prev) => !prev);
   }
 
+  const onClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const { pageX, pageY } = event;
+    setMenuState((MenuState) => {
+      const { isAppear } = MenuState;
+      return {
+        isAppear: !isAppear,
+        positionX: pageX,
+        positionY: pageY,
+        boardId,
+      };
+    });
+  };
+
   return(
     <Wrapper>
-    <Title> 
-      {isEditClicked ? (
-        <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
-      ) : (
-      <>
-        {boardId} 
-        <div onClick={onEdit}>
-          <FontAwesomeIcon icon={faEdit}/>
-        </div>
-      </>
-      )}
-    </Title>
+    <Head>
+      <Title> 
+        {isEditClicked ? (
+          <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
+        ) : (
+          <>
+            {boardId} 
+            <div onClick={onEdit}>
+              <FontAwesomeIcon icon={faEdit}/>
+            </div>
+          </>
+        )}
+      </Title>
+      <div onClick={onClick}>
+        <FontAwesomeIcon icon={faEllipsis} />
+        {isMenuAppear.isAppear ? <Menu/> : null}
+      </div>
+    </Head>
     <Form onSubmit={handleSubmit(onValid)}>
-      <input
+      <input 
         {...register("addTask", { required: true })}
         type="text"
         placeholder={`Add task on ${boardId}`}
       />
       <button>add</button>
     </Form>
-    <button onClick={onDeleteAll} name={boardId}>Delete All</button>
     <Droppable droppableId={boardId} type={`droppableSubItem`}>
       {(provided, snapshot) => (
         <Area 

@@ -108,7 +108,7 @@ function App() {
       { isCreate.isAppear ? 
         <>
         <Button onClick={onButtonClick}><FontAwesomeIcon icon={faX}/></Button>
-        <CreateBoard key="create"/> 
+        <CreateBoard key={Date.now()}/> 
         </>
         : <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button> 
       }

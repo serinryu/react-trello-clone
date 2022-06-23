@@ -14,7 +14,6 @@ const Card = styled.div`
   justify-content: space-between;
   button {
     background-color: none;
-    
   }
 `;
 
