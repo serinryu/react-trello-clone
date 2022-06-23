@@ -11,6 +11,11 @@ interface IToDoState {
   [key: string]: ITodo[];
 }
 
+interface IFormAppearState {
+  id: string;
+  isAppear: boolean;
+}
+
 export const localStorageEffect = (id: string) =>
   ({ setSelf, onSet }: any) => {
     const savedValue = localStorage.getItem(id);
@@ -24,7 +29,7 @@ export const localStorageEffect = (id: string) =>
     });
   };
 
-//todo 간의 이동을 위해 toDoState 구현
+//아이템 배열 상태
 export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: {
@@ -35,7 +40,7 @@ export const toDoState = atom<IToDoState>({
   effects: [localStorageEffect(localId)],
 });
 
-//보드 이동을 위해 boardState 구현 (keys 만 배열로)
+//보드 순서 상태
 export const boardState = atom<string[]>({
   key: "board",
   default: ["to do", "doing", "done"],

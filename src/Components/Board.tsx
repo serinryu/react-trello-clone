@@ -73,7 +73,7 @@ interface IForm {
 }
 
 function Board({ toDos, boardId }:IWrapper){
-  const [isEditClicked, setEditClick] = useState(false);
+  const [ isEditClicked, setEditClick ] = useState(false);
   const [ todo, setTodo ] = useRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
 
@@ -100,6 +100,7 @@ function Board({ toDos, boardId }:IWrapper){
         }
     })
   };
+  
   const onEditClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setEditClick((prev) => !prev);
   }
@@ -108,7 +109,7 @@ function Board({ toDos, boardId }:IWrapper){
     <Wrapper>
     <Title> 
       {isEditClicked ? (
-        <TitleForm key={boardId} boardId={boardId} />
+        <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
       ) : (
       <>
         {boardId} 

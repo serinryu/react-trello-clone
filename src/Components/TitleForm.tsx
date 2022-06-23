@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ITodo, toDoState, boardState } from "../atoms";
 import React, {useState} from "react";
 
@@ -22,17 +22,17 @@ const TForm = styled.form`
 `;
 
 interface IWrapper {
-  boardId : string
+  boardId : string;
+  setEditClick : any;
 }
 
 interface IForm {
   title: string;
 }
 
-function TitleForm({ boardId }:IWrapper){
-  const [isEditClicked, setEditClick] = useState(false);
+function TitleForm({ boardId, setEditClick }:IWrapper){
   const [todo, setTodo] = useRecoilState(toDoState);
-  const [boardList, setBoardList] = useRecoilState(boardState);
+  const setBoardList = useSetRecoilState(boardState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
   const onTitleValid = ({ title }: IForm) => {
     let tempAllBoards = { ...todo };
@@ -50,14 +50,18 @@ function TitleForm({ boardId }:IWrapper){
       return [ ...Object.keys(tempAllBoards) ];
     })
   };
+  const handleEditing = () => {
+    setEditClick((prev:boolean) => !prev);
+  };
   return(
-  <TForm onSubmit={handleSubmit(onTitleValid)}>
-    <input
-      {...register("title", { required: true, onBlur: (e) => console.log(e) })} // need to change
-      type="text"
-      placeholder={boardId}
-    />
-  </TForm>
+    <TForm onSubmit={handleSubmit(onTitleValid)}>
+      <input
+        {...register("title", { required: true, onBlur: (e) => {handleEditing()} })}
+        type="text"
+        placeholder={boardId}
+      />
+      <button onClick={handleEditing}> X </button>
+    </TForm>
   )
 }
 
