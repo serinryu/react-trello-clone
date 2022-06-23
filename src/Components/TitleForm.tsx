@@ -23,7 +23,7 @@ const TForm = styled.form`
 
 interface IWrapper {
   boardId : string;
-  setEditClick : any;
+  setEditClick : React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IForm {
@@ -51,7 +51,7 @@ function TitleForm({ boardId, setEditClick }:IWrapper){
     })
   };
   const onEdit = () => {
-    setEditClick((prev:boolean) => !prev);
+    setEditClick((prev) => !prev);
   };
   return(
     <TForm onSubmit={handleSubmit(onTitleValid)}>
@@ -60,7 +60,7 @@ function TitleForm({ boardId, setEditClick }:IWrapper){
         type="text"
         placeholder={boardId}
       />
-      <button onClick={onEdit}> X </button>
+      <div onClick={onEdit}> X </div>
     </TForm>
   )
 }

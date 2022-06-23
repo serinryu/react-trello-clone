@@ -109,7 +109,7 @@ function Board({ toDos, boardId }:IWrapper){
     <Wrapper>
     <Title> 
       {isEditClicked ? (
-        <TitleForm key={boardId} boardId={boardId} setEditClick={isEditClicked} />
+        <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
       ) : (
       <>
         {boardId} 
