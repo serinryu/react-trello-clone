@@ -6,6 +6,7 @@ import Board from './Components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX, faPlus } from "@fortawesome/free-solid-svg-icons";
 import CreateBoard from "./Components/CreateBoard";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Wrapper = styled.div`
   display: flex;
@@ -103,8 +104,15 @@ function App() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
 
+    <>
+    <HelmetProvider>
+      <Helmet>
+        <title>Trello</title>
+      </Helmet>
+    </HelmetProvider>
+
+    <DragDropContext onDragEnd={onDragEnd}>
       { isCreate.isAppear ? 
         <>
         <Button onClick={onButtonClick}><FontAwesomeIcon icon={faX}/></Button>
@@ -112,10 +120,8 @@ function App() {
         </>
         : <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button> 
       }
-
       <Droppable droppableId="board" type="droppableItem" direction="horizontal">
         {(provided, snapshot) => (
-     
           <Wrapper>
             <Boards 
               ref={provided.innerRef} 
@@ -137,8 +143,7 @@ function App() {
         )}
       </Droppable>
     </DragDropContext>
-
-
+    </>
   );
 }
 
