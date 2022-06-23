@@ -50,17 +50,17 @@ function TitleForm({ boardId, setEditClick }:IWrapper){
       return [ ...Object.keys(tempAllBoards) ];
     })
   };
-  const handleEditing = () => {
+  const onEdit = () => {
     setEditClick((prev:boolean) => !prev);
   };
   return(
     <TForm onSubmit={handleSubmit(onTitleValid)}>
       <input
-        {...register("title", { required: true, onBlur: (e) => {handleEditing()} })}
+        {...register("title", { required: true, onBlur: (e) => {onEdit()} })}
         type="text"
         placeholder={boardId}
       />
-      <button onClick={handleEditing}> X </button>
+      <button onClick={onEdit}> X </button>
     </TForm>
   )
 }

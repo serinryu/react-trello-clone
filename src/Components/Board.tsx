@@ -101,7 +101,7 @@ function Board({ toDos, boardId }:IWrapper){
     })
   };
   
-  const onEditClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onEdit = (event: React.MouseEvent<HTMLDivElement>) => {
     setEditClick((prev) => !prev);
   }
 
@@ -109,11 +109,11 @@ function Board({ toDos, boardId }:IWrapper){
     <Wrapper>
     <Title> 
       {isEditClicked ? (
-        <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
+        <TitleForm key={boardId} boardId={boardId} setEditClick={isEditClicked} />
       ) : (
       <>
         {boardId} 
-        <div onClick={onEditClick}>
+        <div onClick={onEdit}>
           <FontAwesomeIcon icon={faEdit}/>
         </div>
       </>
