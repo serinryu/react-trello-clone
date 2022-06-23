@@ -46,3 +46,12 @@ export const boardState = atom<string[]>({
   default: ["to do", "doing", "done"],
   effects: [localStorageEffect(boardId)],
 })
+
+//보드 생성 상태
+export const createState = atom<IFormAppearState>({
+  key: "form",
+  default: {
+    id: "",
+    isAppear: false,
+  },
+});

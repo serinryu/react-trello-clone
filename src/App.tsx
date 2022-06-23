@@ -1,10 +1,11 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { toDoState, boardState } from './atoms';
+import { toDoState, boardState, createState } from './atoms';
 import Board from './Components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faX, faPlus } from "@fortawesome/free-solid-svg-icons";
+import CreateBoard from "./Components/CreateBoard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const Button = styled.div`
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
   const [boardList, setBoardList] = useRecoilState(boardState);
+  const [isCreate, setCreate] = useRecoilState(createState);
   
   const onDragEnd = (info: DropResult) => {
     //console.log(info);
@@ -94,18 +96,23 @@ function App() {
     };
   };
 
-  const onButtonClick = (e :any) => {
-    const randomStr = Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 5);
-    setTodos((allBoards) => {
-      return { ...allBoards, [randomStr]: [] }
-    });
-    setBoardList((allBoardList) => {
-      return [ ...allBoardList , randomStr ]
-    });
+  const onButtonClick = (event : React.MouseEvent<HTMLDivElement>) => {
+    setCreate((prev) => {
+      return {...prev, isAppear: !prev.isAppear};
+    })
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+
+      { isCreate.isAppear ? 
+        <>
+        <Button onClick={onButtonClick}><FontAwesomeIcon icon={faX}/></Button>
+        <CreateBoard key="create"/> 
+        </>
+        : <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button> 
+      }
+
       <Droppable droppableId="board" type="droppableItem" direction="horizontal">
         {(provided, snapshot) => (
      
@@ -113,7 +120,6 @@ function App() {
             <Boards 
               ref={provided.innerRef} 
               {...provided.droppableProps}>
-            <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
             {boardList.map((boardId, index) => (
               <Draggable key={boardId} draggableId={boardId} index={index}>
                 {(provided, snapshot) => (
