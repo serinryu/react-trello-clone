@@ -17,6 +17,8 @@
 
 ## 💁‍♂️ Introducing Project
 
-#### 🔎 Manage your project
-> - You can manage any type of project, workflow, or task tracking.
+1. Manage any type of project, workflow, or task tracking
 
+2. Reorganize your board & card
+
+3. Add/Edit/Delete your board & card
