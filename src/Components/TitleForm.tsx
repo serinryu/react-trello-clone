@@ -5,19 +5,20 @@ import { ITodo, toDoState, boardState } from "../atoms";
 import React, {useState} from "react";
 
 const TForm = styled.form`
-  width: 100%;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.cardColor};
   display: flex;
-  justify-content: center;
-  padding-bottom: 10px;
+  justify-content: space-between;
+  padding-left: 5px;
   input {
-    font-size: 16px;
-    border: 0;
-    background-color: white;
-    width: 80%;
-    padding: 10px;
+    width: 100%:
+    padding-left: 10px;
     border-radius: 5px;
-    text-align: center;
-    margin: 0 auto;
+    background-color: transparent;
+    border: 0px solid;
+  }
+  div {
+    padding: 10px;
   }
 `;
 

@@ -11,17 +11,19 @@ import TitleForm from "./TitleForm";
 import Menu from "./Menu";
 
 const Wrapper = styled.div`
+  background-color: ${(props) => props.theme.boardColor};
+`
+
+const Content = styled.div`
   width: 300px;
   padding: 20px 10px;
-  background-color: ${(props) => props.theme.boardColor};
-  border-radius: 3px;
   min-height: 300px;
 `;
 
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 10px;
 `
 
 const Title = styled.h2`
@@ -31,7 +33,6 @@ const Title = styled.h2`
   font-size: 18px;
   div {
     padding-left: 8px;
-    opacity: 50%;
     font-size: 12px;
   }
 `
@@ -45,19 +46,19 @@ const Area = styled.div<IAreaProps>`
       : null};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
-  padding: 20px 0px;
+  padding: 10px 0px;
 `;
 
 const Form = styled.form`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+  background-color: ${(props) => props.theme.boardColor};
   input {
-    font-size: 16px;
+    opacity: 80%;
     border: 0;
-    background-color: white;
-    width: 80%;
+    width: 90%;
     padding: 10px;
     border-radius: 5px;
     text-align: center;
@@ -117,6 +118,7 @@ function Board({ toDos, boardId }:IWrapper){
 
   return(
     <Wrapper>
+    <Content>
     <Head>
       <Title> 
         {isEditClicked ? (
@@ -135,14 +137,6 @@ function Board({ toDos, boardId }:IWrapper){
         {isMenuAppear.isAppear ? <Menu/> : null}
       </div>
     </Head>
-    <Form onSubmit={handleSubmit(onValid)}>
-      <input 
-        {...register("addTask", { required: true })}
-        type="text"
-        placeholder={`Add task on ${boardId}`}
-      />
-      <button>add</button>
-    </Form>
     <Droppable droppableId={boardId} type={`droppableSubItem`}>
       {(provided, snapshot) => (
         <Area 
@@ -164,8 +158,15 @@ function Board({ toDos, boardId }:IWrapper){
         </Area>
       )}
     </Droppable>
+    </Content> 
+    <Form onSubmit={handleSubmit(onValid)}>
+      <input 
+        {...register("addTask", { required: true })}
+        type="text"
+        placeholder={`Add another card on ${boardId}`}
+      />
+    </Form>
     </Wrapper>
-    
   )
 }
 

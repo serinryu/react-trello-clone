@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { ITodo, toDoState } from "../atoms";
 import { useForm } from "react-hook-form";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const Card = styled.div`
   border-radius: 5px;
@@ -20,17 +22,21 @@ const Card = styled.div`
 const Form = styled.form`
   width: 100%;
   display: flex;
-  justify-content: center;
-  padding-bottom: 10px;
+  justify-content: space-between;
   input {
-    font-size: 16px;
-    border: 0;
-    background-color: white;
-    width: 80%;
-    padding: 10px;
+    width: 100%:
     border-radius: 5px;
-    text-align: center;
-    margin: 0 auto;
+    text-align: left;
+    background-color: transparent;
+    border: 0px solid;
+  }
+`;
+
+const Button = styled.div`
+  button {
+    padding-left: 5px;
+    border: none;
+    background: none;
   }
 `;
 
@@ -90,14 +96,17 @@ function DraggableCard({ toDoId, toDoText, index, boardId }: IDraggableCardProps
               {...register("item", { required: true, onBlur: (e) => {onEdit()} })}
               type="text"
               placeholder={toDoText}
+              autoFocus
             />
             <div onClick={onEdit}> X </div>
           </Form>
         ) : (
           <>
           {toDoText}
-          <button onClick={onEdit}> edit </button>
-          <button type="submit" name={toDoId.toString()} onClick={onDelete}> Delete </button>
+          <Button>
+            <button onClick={onEdit}> <FontAwesomeIcon icon={faEdit}/> </button>
+            <button type="submit" name={toDoId.toString()} onClick={onDelete}> Delete </button>
+          </Button>
           </>
         )}
 
