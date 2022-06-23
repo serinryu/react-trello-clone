@@ -109,6 +109,7 @@ function App() {
     <HelmetProvider>
       <Helmet>
         <title>Trello</title>
+        <link rel="icon" href="favicon.ico" />
       </Helmet>
     </HelmetProvider>
 
