@@ -122,7 +122,8 @@ function Board({ toDos, boardId }:IWrapper){
     <Head>
       <Title> 
         {isEditClicked ? (
-          <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
+            <TitleForm key={boardId} boardId={boardId} setEditClick={setEditClick} />
+
         ) : (
           <>
             {boardId} 

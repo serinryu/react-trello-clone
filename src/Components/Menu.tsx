@@ -11,22 +11,21 @@ interface StyledBoxProps {
 const BoxMenu = styled.div<StyledBoxProps>`
   width: 150px;
   height: 100px;
-  background-color: white;
   position: absolute;
   left: ${(props) => props.topX};
   top: ${(props) => props.topY};
-  border-radius: 5px;
 `;
 
 const SubElement = styled.button`
   width: 100%;
   height: 50px;
-  border-bottom: 1px solid;
   display: flex;
   align-items: center;
   color: rgba(119, 119, 119, 0.8);
   padding: 10px 10px;
   font-size: 12px;
+  border: 1px solid #748DA6;
+  border-radius: 5px;
   :hover {
     background-color: grey;
     span {

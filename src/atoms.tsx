@@ -40,8 +40,8 @@ export const localStorageEffect = (id: string) =>
 export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: {
-    "to do": [{id: 1, text:"hi"}, {id: 2, text:"hahaha"}],
-    "doing": [{id: 3, text:"meme"}, {id: 4, text:"yeah"}],
+    "to do": [{id: 1, text:"Analytics Data"}, {id: 2, text:"Brand Guidlines"}],
+    "doing": [{id: 3, text:"Blog"}, {id: 4, text:"Social Media"}],
     "done": [],
   },
   effects: [localStorageEffect(localId)],

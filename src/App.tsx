@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { toDoState, boardState, createState } from './atoms';
 import Board from './Components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faX, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import CreateBoard from "./Components/CreateBoard";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -33,6 +33,15 @@ const Button = styled.div`
   font-size: 50px;
   opacity: 0.8;
   cursor: pointer;
+`
+const Overlay = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.5);
 `
 
 function App() {
@@ -114,12 +123,16 @@ function App() {
     </HelmetProvider>
 
     <DragDropContext onDragEnd={onDragEnd}>
-      { isCreate.isAppear ? 
+      { isCreate.isAppear ? (
         <>
-        <Button onClick={onButtonClick}><FontAwesomeIcon icon={faX}/></Button>
-        <CreateBoard key={Date.now()}/> 
+          <Button style={{transform: 'rotate(45deg)'}} onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
+          <Overlay onClick={onButtonClick}>
+            <CreateBoard key={Date.now()}/> 
+          </Overlay>
         </>
-        : <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button> 
+      ) : (
+        <Button onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
+      ) 
       }
       <Droppable droppableId="board" type="droppableItem" direction="horizontal">
         {(provided, snapshot) => (

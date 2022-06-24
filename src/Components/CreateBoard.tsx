@@ -3,10 +3,6 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { toDoState, boardState, createState } from "../atoms";
 
-const Wrapper = styled.div`
-  padding-top: 10%;
-`
-
 const Card = styled.div`
   width: 50%;
   display: flex;
@@ -62,17 +58,15 @@ function CreateBoard(){
   }
 
   return(
-    <Wrapper>
-      <Card>
-        <Form onSubmit={handleSubmit(onBoardValid)}>
-          <input
-            {...register("newBoard", { required: true })}
-            type="text"
-            placeholder="Create a board"
-          ></input>
-        </Form>
-      </Card>
-    </Wrapper>
+    <Card>
+      <Form onSubmit={handleSubmit(onBoardValid)}>
+        <input
+          {...register("newBoard", { required: true })}
+          type="text"
+          placeholder="Create a board"
+        ></input>
+      </Form>
+    </Card>
   );
 };
 
