@@ -10,10 +10,10 @@
 ## 🛠 Using Skill
 - React Router DOM
 - typescript
+- Recoil 
 - styled-components
 - react-beautiful-dnd
-- Recoil 
-
+- Framer Motion
 
 ## 💁‍♂️ Introducing Project
 
