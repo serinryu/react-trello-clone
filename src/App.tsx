@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import CreateBoard from "./Components/CreateBoard";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import React, {useEffect, useState} from "react";
 
 const Wrapper = styled.div`
@@ -30,13 +30,14 @@ const Boards = styled.div`
 
 const Button = styled.div`
   position: absolute;
+  z-index:1000;
   top: 30px;
   right: 50px;
   font-size: 50px;
   opacity: 0.8;
   cursor: pointer;
 `
-const Overlay = styled.div`
+const Overlay = styled(motion.div)`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -48,8 +49,8 @@ const Overlay = styled.div`
 `
 
 const Svg = styled.svg`
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
 `
 
 const svg = {
@@ -148,6 +149,7 @@ function App() {
     </HelmetProvider>
 
     { isStart ? (
+      <AnimatePresence>
       <Overlay>
       <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
         <motion.path           
@@ -162,13 +164,14 @@ function App() {
         />
       </Svg>
       </Overlay>
+      </AnimatePresence>
     ) : null }
 
     <DragDropContext onDragEnd={onDragEnd}>
       { isCreate.isAppear ? (
         <>
           <Button style={{transform: 'rotate(45deg)'}} onClick={onButtonClick}><FontAwesomeIcon icon={faPlus}/></Button>
-          <Overlay onClick={onButtonClick}>
+          <Overlay>
             <CreateBoard key={Date.now()}/> 
           </Overlay>
         </>
